@@ -6,7 +6,7 @@ import lombok.*;
 @Entity
 @Getter
 @Builder
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class RewardEntity {
 
     @Id
