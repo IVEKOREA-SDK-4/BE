@@ -1,7 +1,7 @@
 package com.ivekorea.ivekorea_be.member.service;
 
-import com.ivekorea.ivekorea_be.member.Entity.Member;
-import com.ivekorea.ivekorea_be.member.Repository.MemberRepsitory;
+import com.ivekorea.ivekorea_be.member.entity.Member;
+import com.ivekorea.ivekorea_be.member.repository.MemberRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class MemberService {
 
-    private final MemberRepsitory memberRepsitory;
+    private final MemberRepository memberRepository;
 
     @Transactional
     public Member saveMember(String id, String password) {
@@ -18,6 +18,6 @@ public class MemberService {
                 .id(id)
                 .password(password)
                 .build();
-        return memberRepsitory.save(member);
+        return memberRepository.save(member);
     }
 }

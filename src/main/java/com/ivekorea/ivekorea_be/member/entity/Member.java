@@ -1,4 +1,4 @@
-package com.ivekorea.ivekorea_be.member.Entity;
+package com.ivekorea.ivekorea_be.member.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
