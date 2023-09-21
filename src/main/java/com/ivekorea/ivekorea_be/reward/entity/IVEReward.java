@@ -12,27 +12,22 @@ public class IVEReward {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long rewardId;
+    private Long id;
 
-    // 유저 아이디
     @Column
-    private Long uid;
+    private Long userId;
 
-    // 광고 번호
     @Column
-    private Long ai;
+    private Long adsIdx;
 
-    // 광고 타입
     @Column
     private String adsType;
 
-    // 광고 이름
     @Column
     private String adsName;
 
-    // 유저 적립 포인트
     @Column
-    private Long reward;
+    private Long userReward;
 
     // 매체 적립금
     @Column
