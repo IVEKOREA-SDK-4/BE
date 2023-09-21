@@ -11,20 +11,25 @@ public class RewardService {
 
     private final RewardRepository rewardRepository;
 
-    public IVEReward saveReward(Long ai, Long uid, String ads_name, String ads_type,
-                                Long reward, Long mda_reward,
-                                String key, String hash) {
-        IVEReward IVERewardEntity = IVEReward.builder()
-                .ai(ai)
+    public IVEReward saveIVEReward(Long absIdx,
+                                   Long userId,
+                                   String adsName,
+                                   String adsType,
+                                   Long reward,
+                                   Long mdaReward,
+                                   String key,
+                                   String hash) {
+        IVEReward iveReward = IVEReward.builder()
+                .adsIdx(absIdx)
                 .key(key)
                 .hash(hash)
-                .adsName(ads_name)
-                .mdaReward(mda_reward)
-                .adsType(ads_type)
-                .uid(uid)
-                .reward(reward)
+                .adsName(adsName)
+                .mdaReward(mdaReward)
+                .adsType(adsType)
+                .userId(userId)
+                .userReward(reward)
                 .build();
-        return rewardRepository.save(IVERewardEntity);
+        return rewardRepository.save(iveReward);
     }
 
 }

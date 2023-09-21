@@ -1,6 +1,7 @@
 package com.ivekorea.ivekorea_be.reward.controller;
 
 
+import com.ivekorea.ivekorea_be.reward.entity.IVEReward;
 import com.ivekorea.ivekorea_be.reward.service.RewardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +18,14 @@ public class RewardController {
     private final RewardService rewardService;
 
     @GetMapping("/callback")
-    public ResponseEntity<?> iveAddList(@RequestParam Long ai, @RequestParam Long uid, @RequestParam String ads_name, @RequestParam String ads_type,
-                                        @RequestParam Long reward, @RequestParam Long mda_reward,
-                                        @RequestParam String key, @RequestParam String hash) {
-        return ResponseEntity.ok().body(rewardService.saveReward(ai, uid, ads_name, ads_type,reward, mda_reward, key, hash));
+    public ResponseEntity<IVEReward> iveAddList(@RequestParam(name = "ads_idx") Long absIdx,
+                                                @RequestParam(name = "user") Long userId,
+                                                @RequestParam(name = "ads_name") String adsName,
+                                                @RequestParam(name = "ads_type") String adsType,
+                                                @RequestParam Long reward,
+                                                @RequestParam(name = "mds_reward") Long mdaReward,
+                                                @RequestParam String key,
+                                                @RequestParam String hash) {
+        return ResponseEntity.ok().body(rewardService.saveIVEReward(absIdx, userId, adsName, adsType,reward, mdaReward, key, hash));
     }
 }
