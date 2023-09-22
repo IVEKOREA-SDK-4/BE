@@ -26,7 +26,7 @@ public class RewardService {
                 .adsName(adsName)
                 .mdaReward(mdaReward)
                 .adsType(adsType)
-                .userId(userId)
+                .member(null)
                 .userReward(reward)
                 .build();
         return rewardRepository.save(iveReward);

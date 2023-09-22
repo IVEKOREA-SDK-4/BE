@@ -1,5 +1,6 @@
 package com.ivekorea.ivekorea_be.reward.entity;
 
+import com.ivekorea.ivekorea_be.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -14,8 +15,9 @@ public class IVEReward {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
-    private Long userId;
+    @ManyToOne
+    @JoinColumn(name = "member_uid")
+    private Member member;
 
     @Column
     private Long adsIdx;
