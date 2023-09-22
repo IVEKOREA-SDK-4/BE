@@ -1,5 +1,6 @@
 package com.ivekorea.ivekorea_be.reward.entity;
 
+import com.ivekorea.ivekorea_be.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -7,17 +8,19 @@ import lombok.*;
 @Getter
 @Builder
 @AllArgsConstructor
-public class RewardEntity {
+@NoArgsConstructor
+public class IVEReward {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long rewardId;
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "member_uid")
+    private Member member;
 
     @Column
-    private Long uid;
-
-    @Column
-    private Long ai;
+    private Long adsIdx;
 
     @Column
     private String adsType;
@@ -26,14 +29,17 @@ public class RewardEntity {
     private String adsName;
 
     @Column
-    private Long reward;
+    private Long userReward;
 
+    // 매체 적립금
     @Column
     private Long mdaReward;
 
+    // 클릭키
     @Column
     private String key;
 
+    // 클릭키 유효성 검증 해시
     @Column
     private String hash;
 
