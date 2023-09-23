@@ -1,21 +1,28 @@
 package com.ivekorea.ivekorea_be.member.controller;
 
+import com.ivekorea.ivekorea_be.member.dto.MemberRequestDto;
 import com.ivekorea.ivekorea_be.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
+@RequestMapping("/api/v1/members")
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/member")
 public class MemberController {
 
     private final MemberService memberService;
 
-    @GetMapping("/signup")
-    public ResponseEntity<?> signup(String id, String password){
-        return ResponseEntity.ok().body(memberService.saveMember(id, password));
+    @PostMapping("/sign-up")
+    public ResponseEntity<String> signUp(@RequestBody MemberRequestDto memberRequestDto) {
+        return memberService.saveMember(memberRequestDto);
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody MemberRequestDto memberRequestDto, HttpServletResponse response) {
+        return memberService.compareMember(memberRequestDto, response);
+    }
+
 }
