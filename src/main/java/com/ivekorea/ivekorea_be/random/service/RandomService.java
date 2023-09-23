@@ -3,6 +3,7 @@ package com.ivekorea.ivekorea_be.random.service;
 import com.ivekorea.ivekorea_be.random.draw.DrawPieceAlgorithm;
 import com.ivekorea.ivekorea_be.random.draw.Level;
 import com.ivekorea.ivekorea_be.random.draw.Pair;
+import com.ivekorea.ivekorea_be.random.entity.Category;
 import com.ivekorea.ivekorea_be.random.repository.BenefitRepository;
 import com.ivekorea.ivekorea_be.random.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,8 +22,10 @@ public class RandomService {
     private final CategoryRepository categoryRepository;
     private final BenefitRepository benefitRepository;
 
-    public ResponseEntity<?> getCategory() {
-        return ResponseEntity.ok().body("ok");
+    public ResponseEntity<List<Category>> getCategory() {
+        List<Category> categories = categoryRepository.findAll();
+
+        return ResponseEntity.ok().body(categories);
     }
 
     public ResponseEntity<?> getBenefit() {

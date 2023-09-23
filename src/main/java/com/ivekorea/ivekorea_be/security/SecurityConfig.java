@@ -36,7 +36,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests(auth -> {
             auth.requestMatchers(CorsUtils::isCorsRequest).permitAll();
             auth.requestMatchers(
-                            "/"
+                            "/**"
                     )
                     .permitAll();
         });
