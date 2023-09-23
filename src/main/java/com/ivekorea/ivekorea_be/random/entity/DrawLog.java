@@ -1,18 +1,15 @@
 package com.ivekorea.ivekorea_be.random.entity;
 
+import com.ivekorea.ivekorea_be.common.entity.Timestamped;
 import com.ivekorea.ivekorea_be.member.entity.Member;
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Entity
 @Getter
 @RequiredArgsConstructor
-public class DrawLog {
-
-    /*
-        TODO: createdDate 상속으로 추가
-     */
+public class DrawLog extends Timestamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,4 +1,4 @@
-package com.ivekorea.ivekorea_be.random.level;
+package com.ivekorea.ivekorea_be.random.draw;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -7,9 +7,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum Level {
 
-    HIGH(0, 50000, 100000, 5, 100),
-    MIDDLE(1, 10000, 49999, 15, 60),
-    LOW(2, 0, 9999, 30, 20),;
+    HIGH(0, 50000, 100000, 3, 100),
+    MIDDLE(1, 10000, 49999, 9, 60),
+    LOW(2, 0, 9999, 18, 20),;
 
     private final int lev;
     private final int minPrice;

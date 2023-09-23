@@ -1,16 +1,13 @@
 package com.ivekorea.ivekorea_be.random.entity;
 
+import com.ivekorea.ivekorea_be.common.entity.Timestamped;
 import com.ivekorea.ivekorea_be.member.entity.Member;
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.Getter;
 
 @Entity
 @Getter
-public class ExchangeLog {
-
-    /*
-        TODO: createdDate 상속으로 추가
-     */
+public class ExchangeLog extends Timestamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
