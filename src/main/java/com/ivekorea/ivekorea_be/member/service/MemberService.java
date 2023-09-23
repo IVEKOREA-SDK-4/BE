@@ -2,10 +2,12 @@ package com.ivekorea.ivekorea_be.member.service;
 
 import com.ivekorea.ivekorea_be.exception.CustomException;
 import com.ivekorea.ivekorea_be.exception.ErrorCode;
-import com.ivekorea.ivekorea_be.provider.JwtProvider;
 import com.ivekorea.ivekorea_be.member.dto.MemberRequestDto;
+import com.ivekorea.ivekorea_be.member.dto.MemberRewardResponseDto;
 import com.ivekorea.ivekorea_be.member.entity.Member;
 import com.ivekorea.ivekorea_be.member.repository.MemberRepository;
+import com.ivekorea.ivekorea_be.provider.JwtProvider;
+import com.ivekorea.ivekorea_be.security.UserDetailsImpl;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.jasypt.encryption.StringEncryptor;
@@ -13,7 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,7 +24,6 @@ import java.util.Map;
 public class MemberService {
 
     private final MemberRepository memberRepository;
-
     private final JwtProvider jwtProvider;
     private final StringEncryptor jasyptStringEncryptor;
 
@@ -53,6 +53,7 @@ public class MemberService {
 
         Map<String, Object> claims = new HashMap<>();
         claims.put("id", memberRequestDto.getId());
+        claims.put("uid", member.getUid());
         String accessToken = jwtProvider.createToken(claims, jwtProvider.getExpireDateAccessToken());
         String refreshToken = jwtProvider.createToken(new HashMap<>(), jwtProvider.getExpireDateRefreshToken());
 
@@ -60,5 +61,15 @@ public class MemberService {
         response.addHeader("Refresh-Token", refreshToken);
 
         return ResponseEntity.status(HttpStatus.CREATED).body("ok");
+    }
+
+    public ResponseEntity<?> totalReward(UserDetailsImpl userDetails) {
+        Member member = memberRepository.findByUid(userDetails.getUser().getUid()).orElseThrow(
+                () -> new CustomException(ErrorCode.INVALID_CODE)
+        );
+        MemberRewardResponseDto memberRewardResponseDto = MemberRewardResponseDto.builder()
+                .totalReward(member.getMemberReward().getTotalReward())
+                .build();
+        return ResponseEntity.ok().body(memberRewardResponseDto);
     }
 }
