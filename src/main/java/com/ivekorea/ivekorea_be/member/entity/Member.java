@@ -31,4 +31,7 @@ public class Member {
     @JoinColumn(name = "member_reward_id")
     private MemberReward memberReward;
 
+    public void deductMemberReward() {
+        memberReward.deductTotalReward(100);
+    }
 }

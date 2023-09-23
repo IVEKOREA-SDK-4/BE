@@ -14,4 +14,9 @@ public class MemberReward {
 
     @Column
     private Integer totalReward;
+
+
+    public void deductTotalReward(int useReward) {
+        totalReward -= useReward;
+    }
 }
