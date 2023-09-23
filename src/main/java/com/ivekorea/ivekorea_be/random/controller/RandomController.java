@@ -2,6 +2,7 @@ package com.ivekorea.ivekorea_be.random.controller;
 
 //import com.ivekorea.ivekorea_be.random.service.MockService;
 
+
 import com.ivekorea.ivekorea_be.random.dto.BenefitInfoListResponseDto;
 import com.ivekorea.ivekorea_be.random.entity.Category;
 import com.ivekorea.ivekorea_be.random.service.RandomService;
