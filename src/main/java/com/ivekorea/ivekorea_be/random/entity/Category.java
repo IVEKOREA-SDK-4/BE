@@ -2,9 +2,11 @@ package com.ivekorea.ivekorea_be.random.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class Category {
 
     @Id
@@ -13,5 +15,9 @@ public class Category {
 
     @Column
     private String name;
+
+    public Category(String name) {
+        this.name = name;
+    }
 
 }

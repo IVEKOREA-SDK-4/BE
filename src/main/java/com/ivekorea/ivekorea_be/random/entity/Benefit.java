@@ -3,9 +3,11 @@ package com.ivekorea.ivekorea_be.random.entity;
 import com.ivekorea.ivekorea_be.random.level.Level;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class Benefit {
 
     @Id
@@ -22,7 +24,10 @@ public class Benefit {
     @Column
     private String name;
 
-    @Column
-    private Integer maxCount;
+    public Benefit(Level level, Category category, String name) {
+        this.level = level;
+        this.category = category;
+        this.name = name;
+    }
 
 }
