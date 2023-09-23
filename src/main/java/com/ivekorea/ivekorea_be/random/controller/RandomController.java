@@ -4,14 +4,17 @@ package com.ivekorea.ivekorea_be.random.controller;
 
 
 import com.ivekorea.ivekorea_be.random.dto.BenefitInfoListResponseDto;
+import com.ivekorea.ivekorea_be.random.dto.PieceResponseDto;
 import com.ivekorea.ivekorea_be.random.entity.Category;
 import com.ivekorea.ivekorea_be.random.service.RandomService;
+import com.ivekorea.ivekorea_be.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,12 +56,17 @@ public class RandomController {
     }
 
     @GetMapping("/benefitInfo")
-    public ResponseEntity<?> getBenefitIngo(@PageableDefault(size = 20, page = 1) Pageable pageable) {
+    public ResponseEntity<?> benefitInfo(@PageableDefault(size = 20, page = 1) Pageable pageable) {
         PageRequest pageRequest = PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize());
 
         Page<BenefitInfoListResponseDto> responseDtos = randomService.getBenefitInfo(pageRequest);
 
         return ResponseEntity.ok().body(responseDtos);
+    }
+
+    @GetMapping("/mypiece")
+    public ResponseEntity<List<PieceResponseDto>> myHavePiece(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return randomService.getMyHavePiece(userDetails);
     }
 
 //
