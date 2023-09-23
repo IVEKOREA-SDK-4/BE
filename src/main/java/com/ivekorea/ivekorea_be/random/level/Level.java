@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 public enum Level {
 
     HIGH(0, 50000, 100000, 5, 100),
-    MIDDLE(1, 10000, 49999, 15, 50),
+    MIDDLE(1, 10000, 49999, 15, 60),
     LOW(2, 0, 9999, 30, 20),;
 
     private final int lev;
