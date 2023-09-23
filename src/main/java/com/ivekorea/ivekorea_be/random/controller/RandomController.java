@@ -1,6 +1,7 @@
 package com.ivekorea.ivekorea_be.random.controller;
 
 //import com.ivekorea.ivekorea_be.random.service.MockService;
+import com.ivekorea.ivekorea_be.random.entity.Category;
 import com.ivekorea.ivekorea_be.random.service.RandomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,7 +21,7 @@ public class RandomController {
 //    private final MockService mockService;
 
     @GetMapping("/categories")
-    public ResponseEntity<?> fetchCategory() {
+    public ResponseEntity<List<Category>> fetchCategory() {
         return randomService.getCategory();
     }
 
