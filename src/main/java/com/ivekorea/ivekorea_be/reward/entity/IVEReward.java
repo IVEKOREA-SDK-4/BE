@@ -37,7 +37,7 @@ public class IVEReward {
 
     // 클릭키
     @Column
-    private String key;
+    private String clickKey;
 
     // 클릭키 유효성 검증 해시
     @Column

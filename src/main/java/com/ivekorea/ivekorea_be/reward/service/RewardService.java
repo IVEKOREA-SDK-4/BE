@@ -9,9 +9,13 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class RewardService {
 
+    /*
+        TODO userId 활용해서 Member로 저장
+     */
+
     private final RewardRepository rewardRepository;
 
-    public IVEReward saveIVEReward(Long absIdx,
+    public IVEReward saveIVEReward(Long adsIdx,
                                    Long userId,
                                    String adsName,
                                    String adsType,
@@ -20,8 +24,8 @@ public class RewardService {
                                    String key,
                                    String hash) {
         IVEReward iveReward = IVEReward.builder()
-                .adsIdx(absIdx)
-                .key(key)
+                .adsIdx(adsIdx)
+                .clickKey(key)
                 .hash(hash)
                 .adsName(adsName)
                 .mdaReward(mdaReward)
