@@ -6,6 +6,7 @@ import com.ivekorea.ivekorea_be.provider.JwtProvider;
 import com.ivekorea.ivekorea_be.member.dto.MemberRequestDto;
 import com.ivekorea.ivekorea_be.member.entity.Member;
 import com.ivekorea.ivekorea_be.member.repository.MemberRepository;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.jasypt.encryption.StringEncryptor;
 import org.springframework.http.HttpStatus;
@@ -13,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpServletResponse;
+
 import java.util.HashMap;
 import java.util.Map;
 

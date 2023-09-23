@@ -1,7 +1,8 @@
 package com.ivekorea.ivekorea_be.random.entity;
 
 import com.ivekorea.ivekorea_be.member.entity.Member;
-import javax.persistence.*;
+
+import jakarta.persistence.*;
 import lombok.Getter;
 
 @Entity

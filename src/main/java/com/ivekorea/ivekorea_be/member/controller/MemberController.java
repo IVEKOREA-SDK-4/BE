@@ -2,11 +2,12 @@ package com.ivekorea.ivekorea_be.member.controller;
 
 import com.ivekorea.ivekorea_be.member.dto.MemberRequestDto;
 import com.ivekorea.ivekorea_be.member.service.MemberService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
+
 
 @RestController
 @RequestMapping("/api/v1/members")

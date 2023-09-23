@@ -1,6 +1,7 @@
 package com.ivekorea.ivekorea_be.random.entity;
 
-import javax.persistence.*;
+
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

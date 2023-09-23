@@ -1,8 +1,9 @@
 package com.ivekorea.ivekorea_be.member.entity;
 
+import jakarta.persistence.*;
 import lombok.Getter;
 
-import javax.persistence.*;
+
 
 @Entity
 @Getter

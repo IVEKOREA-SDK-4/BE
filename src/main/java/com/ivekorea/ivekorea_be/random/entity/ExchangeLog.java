@@ -1,13 +1,13 @@
 package com.ivekorea.ivekorea_be.random.entity;
 
-import com.ivekorea.ivekorea_be.common.entity.Timestamped;
+
 import com.ivekorea.ivekorea_be.member.entity.Member;
-import javax.persistence.*;
+import jakarta.persistence.*;
 import lombok.Getter;
 
 @Entity
 @Getter
-public class ExchangeLog extends Timestamped {
+public class ExchangeLog {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
