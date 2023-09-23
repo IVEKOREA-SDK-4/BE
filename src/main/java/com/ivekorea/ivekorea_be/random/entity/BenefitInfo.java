@@ -2,9 +2,11 @@ package com.ivekorea.ivekorea_be.random.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class BenefitInfo {
 
     @Id
@@ -24,4 +26,10 @@ public class BenefitInfo {
     @Column(nullable = false)
     private Integer salePrice;
 
+    public BenefitInfo(Benefit benefit, String productName, String imageUrl, Integer salePrice) {
+        this.benefit = benefit;
+        this.productName = productName;
+        this.imageUrl = imageUrl;
+        this.salePrice = salePrice;
+    }
 }
