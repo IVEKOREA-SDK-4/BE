@@ -27,4 +27,8 @@ public class Member {
     @Column
     private String socialType;
 
+    @OneToOne
+    @JoinColumn(name = "member_reward_id")
+    private MemberReward memberReward;
+
 }

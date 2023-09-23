@@ -17,7 +17,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-
 import java.io.IOException;
 
 @Slf4j
@@ -32,13 +31,13 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         String token = jwtProvider.resolveToken(request);
 
-        if(token != null) {
-            if(!jwtProvider.validateToken(token)){
+        if (token != null) {
+            if (!jwtProvider.validateToken(token)) {
                 jwtExceptionHandler(response, ErrorCode.INVALID_TOKEN);
                 return;
             }
             Claims info = jwtProvider.getUserInfoFromToken(token);
-            setAuthentication(info.getSubject());
+            setAuthentication(info.get("id").toString());
         }
         filterChain.doFilter(request, response);
     }
