@@ -3,20 +3,16 @@ package com.ivekorea.ivekorea_be.random.service;
 import com.ivekorea.ivekorea_be.exception.CustomException;
 import com.ivekorea.ivekorea_be.exception.ErrorCode;
 import com.ivekorea.ivekorea_be.member.entity.Member;
-import com.ivekorea.ivekorea_be.member.repository.MemberRepository;
 import com.ivekorea.ivekorea_be.member.repository.MemberRewardRepository;
 import com.ivekorea.ivekorea_be.random.draw.DrawPieceAlgorithm;
 import com.ivekorea.ivekorea_be.random.draw.Level;
 import com.ivekorea.ivekorea_be.random.draw.Pair;
+import com.ivekorea.ivekorea_be.random.dto.BenefitInfoListResponseDto;
+import com.ivekorea.ivekorea_be.random.dto.PieceResponseDto;
 import com.ivekorea.ivekorea_be.random.dto.RandomResponseDto;
 import com.ivekorea.ivekorea_be.random.entity.*;
 import com.ivekorea.ivekorea_be.random.repository.*;
-import com.ivekorea.ivekorea_be.random.dto.BenefitInfoListResponseDto;
-import com.ivekorea.ivekorea_be.random.entity.BenefitInfo;
-import com.ivekorea.ivekorea_be.random.entity.Category;
-import com.ivekorea.ivekorea_be.random.repository.BenefitInfoRepository;
-import com.ivekorea.ivekorea_be.random.repository.BenefitRepository;
-import com.ivekorea.ivekorea_be.random.repository.CategoryRepository;
+import com.ivekorea.ivekorea_be.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -26,7 +22,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -43,6 +42,7 @@ public class RandomService {
     private final ExchangeLogRepository exchangeLogRepository;
 
     private final Random random = new Random();
+    private final PieceRepository pieceRepository;
 
     public ResponseEntity<List<Category>> getCategory() {
         List<Category> categories = categoryRepository.findAll();
@@ -82,6 +82,7 @@ public class RandomService {
                 .benefitPrice(benefitInfo.getSalePrice())
                 .build());
     }
+
     @Transactional
     public ResponseEntity<RandomResponseDto.DrawPieceResultDto> getDrawResultPiece(Member member) {
         int count = drawLogRepository.countDrawLogByMember(member);
@@ -165,5 +166,13 @@ public class RandomService {
                 .map(BenefitInfoListResponseDto::of)
                 .collect(Collectors.toList());
         return new PageImpl<>(responseDtos, pages.getPageable(), pages.getTotalElements());
+    }
+
+    public ResponseEntity<List<PieceResponseDto>> getMyHavePiece(UserDetailsImpl userDetails) {
+        List<Piece> pieceList = pieceRepository.findByMember_Uid(userDetails.getUser().getUid());
+        List<PieceResponseDto> pieceResponseDto = pieceList.stream()
+                .map(PieceResponseDto::of)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok().body(pieceResponseDto);
     }
 }

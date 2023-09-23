@@ -1,7 +1,9 @@
 package com.ivekorea.ivekorea_be.random.controller;
 
 //import com.ivekorea.ivekorea_be.random.service.MockService;
+
 import com.ivekorea.ivekorea_be.random.dto.BenefitInfoListResponseDto;
+import com.ivekorea.ivekorea_be.random.dto.PieceResponseDto;
 import com.ivekorea.ivekorea_be.random.dto.RandomResponseDto;
 import com.ivekorea.ivekorea_be.random.entity.Category;
 import com.ivekorea.ivekorea_be.random.service.RandomService;
@@ -51,12 +53,17 @@ public class RandomController {
     }
 
     @GetMapping("/benefitInfo")
-    public ResponseEntity<?> getBenefitIngo(@PageableDefault(size = 20, page = 1) Pageable pageable) {
+    public ResponseEntity<?> benefitInfo(@PageableDefault(size = 20, page = 1) Pageable pageable) {
         PageRequest pageRequest = PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize());
 
         Page<BenefitInfoListResponseDto> responseDtos = randomService.getBenefitInfo(pageRequest);
 
         return ResponseEntity.ok().body(responseDtos);
+    }
+
+    @GetMapping("/mypiece")
+    public ResponseEntity<List<PieceResponseDto>> myHavePiece(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return randomService.getMyHavePiece(userDetails);
     }
 
 //
