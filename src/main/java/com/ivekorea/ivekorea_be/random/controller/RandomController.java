@@ -1,21 +1,19 @@
 package com.ivekorea.ivekorea_be.random.controller;
 
 //import com.ivekorea.ivekorea_be.random.service.MockService;
-
-
 import com.ivekorea.ivekorea_be.random.dto.BenefitInfoListResponseDto;
+import com.ivekorea.ivekorea_be.random.dto.RandomResponseDto;
 import com.ivekorea.ivekorea_be.random.entity.Category;
 import com.ivekorea.ivekorea_be.random.service.RandomService;
+import com.ivekorea.ivekorea_be.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -37,14 +35,14 @@ public class RandomController {
         return randomService.getBenefit();
     }
 
-    @PostMapping("/draw-benefit")
-    public ResponseEntity<?> fetchDrawBenefit() {
-        return randomService.getDrawBenefit();
+    @PostMapping("/draw-benefit/{pieceId}")
+    public ResponseEntity<RandomResponseDto.DrawBenefitDto> fetchDrawBenefit(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long pieceId) {
+        return randomService.getDrawBenefit(userDetails.getUser(), pieceId);
     }
 
     @PostMapping("/draw-piece")
-    public ResponseEntity<?> fetchDrawResultPiece() {
-        return randomService.getDrawResultPiece();
+    public ResponseEntity<RandomResponseDto.DrawPieceResultDto> fetchDrawResultPiece(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return randomService.getDrawResultPiece(userDetails.getUser());
     }
 
     @GetMapping("/draw-logs")

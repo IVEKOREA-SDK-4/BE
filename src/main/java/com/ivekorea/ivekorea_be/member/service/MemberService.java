@@ -5,7 +5,9 @@ import com.ivekorea.ivekorea_be.exception.ErrorCode;
 import com.ivekorea.ivekorea_be.member.dto.MemberRequestDto;
 import com.ivekorea.ivekorea_be.member.dto.MemberRewardResponseDto;
 import com.ivekorea.ivekorea_be.member.entity.Member;
+import com.ivekorea.ivekorea_be.member.entity.MemberReward;
 import com.ivekorea.ivekorea_be.member.repository.MemberRepository;
+import com.ivekorea.ivekorea_be.member.repository.MemberRewardRepository;
 import com.ivekorea.ivekorea_be.provider.JwtProvider;
 import com.ivekorea.ivekorea_be.security.UserDetailsImpl;
 import jakarta.servlet.http.HttpServletResponse;
@@ -24,18 +26,20 @@ import java.util.Map;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final MemberRewardRepository memberRewardRepository;
     private final JwtProvider jwtProvider;
     private final StringEncryptor jasyptStringEncryptor;
 
     @Transactional
     public ResponseEntity<String> saveMember(MemberRequestDto memberRequestDto) {
+        MemberReward memberReward = memberRewardRepository.save(new MemberReward(10000));
+
         Member member = Member.builder()
                 .id(memberRequestDto.getId())
                 .password(jasyptStringEncryptor.encrypt(memberRequestDto.getPassword()))
+                .memberReward(memberReward)
                 .build();
         memberRepository.save(member);
-
-        // TODO 사용자 리워드 생성
 
         return ResponseEntity.status(HttpStatus.CREATED).body("ok");
     }
