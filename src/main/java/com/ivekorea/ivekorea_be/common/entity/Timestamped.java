@@ -1,4 +1,4 @@
-로package com.ivekorea.ivekorea_be.common.entity;
+package com.ivekorea.ivekorea_be.common.entity;
 
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
