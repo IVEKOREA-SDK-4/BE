@@ -1,7 +1,7 @@
 package com.ivekorea.ivekorea_be.random.entity;
 
-import com.ivekorea.ivekorea_be.random.level.Level;
-import jakarta.persistence.*;
+import com.ivekorea.ivekorea_be.random.draw.Level;
+import javax.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
