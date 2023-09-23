@@ -4,6 +4,7 @@ import com.ivekorea.ivekorea_be.exception.CustomException;
 import com.ivekorea.ivekorea_be.exception.ErrorCode;
 import com.ivekorea.ivekorea_be.member.entity.Member;
 import com.ivekorea.ivekorea_be.member.repository.MemberRepository;
+import com.ivekorea.ivekorea_be.member.repository.MemberRewardRepository;
 import com.ivekorea.ivekorea_be.random.draw.DrawPieceAlgorithm;
 import com.ivekorea.ivekorea_be.random.draw.Level;
 import com.ivekorea.ivekorea_be.random.draw.Pair;
@@ -32,6 +33,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class RandomService {
+    private final MemberRewardRepository memberRewardRepository;
 
     private final CategoryRepository categoryRepository;
     private final BenefitRepository benefitRepository;
@@ -39,7 +41,6 @@ public class RandomService {
     private final DrawLogRepository drawLogRepository;
     private final PieceRepository pieceRepository;
     private final ExchangeLogRepository exchangeLogRepository;
-    private final MemberRepository memberRepository;
 
     private final Random random = new Random();
 
@@ -92,6 +93,9 @@ public class RandomService {
 
         String word = drawPieceAlgorithm.getRandom();
 
+        member.deductMemberReward();
+        memberRewardRepository.save(member.getMemberReward());
+
         if (word.equals("꽝")) {
             return ResponseEntity.ok().body(new RandomResponseDto.DrawPieceResultDto("꽝이네요", word));
         }
@@ -102,13 +106,25 @@ public class RandomService {
 
         List<Benefit> benefits = benefitRepository.findByCategoryAndLevel(category, Level.valueOf(word));
 
-        member.deductMemberReward();
-        memberRepository.save(member);
+        Benefit benefit = benefits.get(random.nextInt(0, benefits.size() - 1));
 
         drawLogRepository.save(DrawLog.builder()
-                .benefit(benefits.get(random.nextInt(0, benefits.size() - 1)))
+                .benefit(benefit)
                 .member(member)
                 .build());
+
+        Optional<Piece> optionalPiece = pieceRepository.findByMemberAndBenefit(member, benefit);
+
+        if (optionalPiece.isEmpty()) {
+            pieceRepository.save(Piece.builder()
+                    .benefit(benefit)
+                    .count(1)
+                    .member(member)
+                    .build());
+        } else {
+            optionalPiece.get().rewardPiece();
+            pieceRepository.save(optionalPiece.get());
+        }
 
         return ResponseEntity.ok().body(new RandomResponseDto.DrawPieceResultDto(category.getName(), word));
     }

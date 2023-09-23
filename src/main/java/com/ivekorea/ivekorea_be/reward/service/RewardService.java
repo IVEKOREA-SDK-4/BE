@@ -4,6 +4,7 @@ import com.ivekorea.ivekorea_be.exception.CustomException;
 import com.ivekorea.ivekorea_be.exception.ErrorCode;
 import com.ivekorea.ivekorea_be.member.entity.Member;
 import com.ivekorea.ivekorea_be.member.repository.MemberRepository;
+import com.ivekorea.ivekorea_be.member.repository.MemberRewardRepository;
 import com.ivekorea.ivekorea_be.reward.entity.IVEReward;
 import com.ivekorea.ivekorea_be.reward.repository.RewardRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,12 +21,9 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class RewardService {
 
-    /*
-        TODO userId 활용해서 Member로 저장
-     */
-
     private final RewardRepository rewardRepository;
     private final MemberRepository memberRepository;
+    private final MemberRewardRepository memberRewardRepository;
 
     @Transactional
     public ResponseEntity<String> saveIVEReward(Long adsIdx,
@@ -55,7 +53,8 @@ public class RewardService {
 
         rewardRepository.save(iveReward);
 
-        // TODO 멤버 리워드 적립
+        member.getMemberReward().plusReward(Math.toIntExact(reward));
+        memberRewardRepository.save(member.getMemberReward());
 
         // 200을 보내야 재요청을 하지 않음
         return ResponseEntity.ok("ok");
