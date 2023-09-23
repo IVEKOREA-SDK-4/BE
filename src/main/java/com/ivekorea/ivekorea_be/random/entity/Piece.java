@@ -24,4 +24,8 @@ public class Piece {
     @Column
     private Integer count;
 
+    public void deductPiece(int maxCount) {
+        count -= maxCount;
+    }
+
 }

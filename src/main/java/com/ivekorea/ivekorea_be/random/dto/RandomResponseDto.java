@@ -17,4 +17,15 @@ public class RandomResponseDto {
 
     }
 
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    public static class DrawBenefitDto {
+
+        private final String benefitName;
+        private final String benefitImage;
+        private final int benefitPrice;
+
+    }
+
 }

@@ -8,12 +8,8 @@ import com.ivekorea.ivekorea_be.random.draw.DrawPieceAlgorithm;
 import com.ivekorea.ivekorea_be.random.draw.Level;
 import com.ivekorea.ivekorea_be.random.draw.Pair;
 import com.ivekorea.ivekorea_be.random.dto.RandomResponseDto;
-import com.ivekorea.ivekorea_be.random.entity.Benefit;
-import com.ivekorea.ivekorea_be.random.entity.Category;
-import com.ivekorea.ivekorea_be.random.entity.DrawLog;
-import com.ivekorea.ivekorea_be.random.repository.BenefitRepository;
-import com.ivekorea.ivekorea_be.random.repository.CategoryRepository;
-import com.ivekorea.ivekorea_be.random.repository.DrawLogRepository;
+import com.ivekorea.ivekorea_be.random.entity.*;
+import com.ivekorea.ivekorea_be.random.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +25,10 @@ public class RandomService {
 
     private final CategoryRepository categoryRepository;
     private final BenefitRepository benefitRepository;
+    private final BenefitInfoRepository benefitInfoRepository;
     private final DrawLogRepository drawLogRepository;
+    private final PieceRepository pieceRepository;
+    private final ExchangeLogRepository exchangeLogRepository;
     private final MemberRepository memberRepository;
 
     private final Random random = new Random();
@@ -44,12 +43,34 @@ public class RandomService {
         return ResponseEntity.ok().body("ok");
     }
 
-    public ResponseEntity<?> getDrawBenefit() {
+    @Transactional
+    public ResponseEntity<RandomResponseDto.DrawBenefitDto> getDrawBenefit(Member member, Long pieceId) {
+        Piece piece = pieceRepository.findByIdAndMember(pieceId, member).orElseThrow(
+                () -> new CustomException(ErrorCode.UNDEFINED_REQUEST)
+        );
 
+        Level level = piece.getBenefit().getLevel();
+        if (piece.getCount() <= level.getMaxCount()) {
+            throw new CustomException(ErrorCode.UNDEFINED_REQUEST);
+        }
 
-        return ResponseEntity.ok().body("ok");
+        piece.deductPiece(level.getMaxCount());
+        pieceRepository.save(piece);
+
+        List<BenefitInfo> benefitInfos = benefitInfoRepository.findByBenefit(piece.getBenefit());
+
+        BenefitInfo benefitInfo = benefitInfos.get(random.nextInt(0, benefitInfos.size() - 1));
+        exchangeLogRepository.save(ExchangeLog.builder()
+                .benefitInfo(benefitInfo)
+                .member(member)
+                .build());
+
+        return ResponseEntity.ok().body(RandomResponseDto.DrawBenefitDto.builder()
+                .benefitImage(benefitInfo.getImageUrl())
+                .benefitName(benefitInfo.getProductName())
+                .benefitPrice(benefitInfo.getSalePrice())
+                .build());
     }
-
     @Transactional
     public ResponseEntity<RandomResponseDto.DrawPieceResultDto> getDrawResultPiece(Member member) {
         int count = drawLogRepository.countDrawLogByMember(member);
@@ -75,7 +96,7 @@ public class RandomService {
         memberRepository.save(member);
 
         drawLogRepository.save(DrawLog.builder()
-                .benefit(benefits.get(random.nextInt(0, benefits.size())))
+                .benefit(benefits.get(random.nextInt(0, benefits.size() - 1)))
                 .member(member)
                 .build());
 
@@ -112,5 +133,6 @@ public class RandomService {
             );
         }
     }
+
 }
 

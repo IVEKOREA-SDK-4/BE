@@ -30,9 +30,9 @@ public class RandomController {
         return randomService.getBenefit();
     }
 
-    @PostMapping("/draw-benefit")
-    public ResponseEntity<?> fetchDrawBenefit() {
-        return randomService.getDrawBenefit();
+    @PostMapping("/draw-benefit/{pieceId}")
+    public ResponseEntity<RandomResponseDto.DrawBenefitDto> fetchDrawBenefit(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long pieceId) {
+        return randomService.getDrawBenefit(userDetails.getUser(), pieceId);
     }
 
     @PostMapping("/draw-piece")
