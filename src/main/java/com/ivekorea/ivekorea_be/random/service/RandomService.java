@@ -3,10 +3,16 @@ package com.ivekorea.ivekorea_be.random.service;
 import com.ivekorea.ivekorea_be.random.draw.DrawPieceAlgorithm;
 import com.ivekorea.ivekorea_be.random.draw.Level;
 import com.ivekorea.ivekorea_be.random.draw.Pair;
+import com.ivekorea.ivekorea_be.random.dto.BenefitInfoListResponseDto;
+import com.ivekorea.ivekorea_be.random.entity.BenefitInfo;
 import com.ivekorea.ivekorea_be.random.entity.Category;
+import com.ivekorea.ivekorea_be.random.repository.BenefitInfoRepository;
 import com.ivekorea.ivekorea_be.random.repository.BenefitRepository;
 import com.ivekorea.ivekorea_be.random.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +20,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +28,7 @@ public class RandomService {
 
     private final CategoryRepository categoryRepository;
     private final BenefitRepository benefitRepository;
+    private final BenefitInfoRepository benefitInfoRepository;
 
     public ResponseEntity<List<Category>> getCategory() {
         List<Category> categories = categoryRepository.findAll();
@@ -65,5 +73,13 @@ public class RandomService {
 
     public ResponseEntity<?> getDrawLog() {
         return ResponseEntity.ok().body("ok");
+    }
+
+    public Page<BenefitInfoListResponseDto> getBenefitInfo(Pageable pageable) {
+        Page<BenefitInfo> pages = benefitInfoRepository.findAll(pageable);
+        List<BenefitInfoListResponseDto> responseDtos = pages.stream()
+                .map(BenefitInfoListResponseDto::of)
+                .collect(Collectors.toList());
+        return new PageImpl<>(responseDtos, pages.getPageable(), pages.getTotalElements());
     }
 }
