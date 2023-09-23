@@ -10,13 +10,23 @@ import com.ivekorea.ivekorea_be.random.draw.Pair;
 import com.ivekorea.ivekorea_be.random.dto.RandomResponseDto;
 import com.ivekorea.ivekorea_be.random.entity.*;
 import com.ivekorea.ivekorea_be.random.repository.*;
+import com.ivekorea.ivekorea_be.random.dto.BenefitInfoListResponseDto;
+import com.ivekorea.ivekorea_be.random.entity.BenefitInfo;
+import com.ivekorea.ivekorea_be.random.entity.Category;
+import com.ivekorea.ivekorea_be.random.repository.BenefitInfoRepository;
+import com.ivekorea.ivekorea_be.random.repository.BenefitRepository;
+import com.ivekorea.ivekorea_be.random.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -103,11 +113,6 @@ public class RandomService {
         return ResponseEntity.ok().body(new RandomResponseDto.DrawPieceResultDto(category.getName(), word));
     }
 
-    public ResponseEntity<?> getDrawLog() {
-        return ResponseEntity.ok().body("ok");
-    }
-
-
     private List<Pair<String, Integer>> getPairs(int count) {
         int leverPercentageSum = 0;
 
@@ -134,5 +139,15 @@ public class RandomService {
         }
     }
 
-}
+    public ResponseEntity<?> getDrawLog() {
+        return ResponseEntity.ok().body("ok");
+    }
 
+    public Page<BenefitInfoListResponseDto> getBenefitInfo(Pageable pageable) {
+        Page<BenefitInfo> pages = benefitInfoRepository.findAll(pageable);
+        List<BenefitInfoListResponseDto> responseDtos = pages.stream()
+                .map(BenefitInfoListResponseDto::of)
+                .collect(Collectors.toList());
+        return new PageImpl<>(responseDtos, pages.getPageable(), pages.getTotalElements());
+    }
+}

@@ -1,11 +1,16 @@
 package com.ivekorea.ivekorea_be.random.controller;
 
 //import com.ivekorea.ivekorea_be.random.service.MockService;
+import com.ivekorea.ivekorea_be.random.dto.BenefitInfoListResponseDto;
 import com.ivekorea.ivekorea_be.random.dto.RandomResponseDto;
 import com.ivekorea.ivekorea_be.random.entity.Category;
 import com.ivekorea.ivekorea_be.random.service.RandomService;
 import com.ivekorea.ivekorea_be.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +30,7 @@ public class RandomController {
         return randomService.getCategory();
     }
 
-    @GetMapping("benefits")
+    @GetMapping("/benefits")
     public ResponseEntity<?> fetchBenefit() {
         return randomService.getBenefit();
     }
@@ -45,6 +50,14 @@ public class RandomController {
         return randomService.getDrawLog();
     }
 
+    @GetMapping("/benefitInfo")
+    public ResponseEntity<?> getBenefitIngo(@PageableDefault(size = 20, page = 1) Pageable pageable) {
+        PageRequest pageRequest = PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize());
+
+        Page<BenefitInfoListResponseDto> responseDtos = randomService.getBenefitInfo(pageRequest);
+
+        return ResponseEntity.ok().body(responseDtos);
+    }
 
 //
 //    @PostMapping("/mock")

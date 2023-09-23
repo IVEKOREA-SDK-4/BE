@@ -21,7 +21,7 @@ public class Benefit {
     @Column
     private Level level;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;
 
